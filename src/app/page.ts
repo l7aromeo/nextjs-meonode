@@ -1,6 +1,6 @@
 'use client'
 
-import { Center, Column, Row, H1, H2, H3, Button, Text, Portal, A, Div } from '@meonode/ui'
+import { Node, Center, Column, Row, H1, H2, H3, Button, Text, Portal, A, Div } from '@meonode/ui'
 import { PortalProviders } from '@src/components/Providers'
 import { useEffect, useState } from 'react'
 
@@ -18,16 +18,16 @@ export default function HomePage() {
       gap: 'theme.spacing.2xl',
       children: [
         // Hero Section
-        HeroSection(),
+        Node(HeroSection),
 
         // Features Section
-        FeaturesSection({ activeFeature, setActiveFeature }),
+        Node(FeaturesSection, { activeFeature, setActiveFeature }),
 
         // Interactive Demo Section
-        DemoSection(),
+        Node(DemoSection),
 
         // CTA Section
-        CTASection(),
+        Node(CTASection),
       ],
     }),
   }).render()
@@ -108,7 +108,7 @@ const HeroSection = () =>
         ],
       }),
     ],
-  })
+  }).render()
 
 // Features Section Component
 const FeaturesSection = ({
@@ -212,7 +212,7 @@ const FeaturesSection = ({
         ),
       }),
     ],
-  })
+  }).render()
 }
 
 // Demo Section Component
@@ -292,7 +292,7 @@ const DemoSection = () =>
         ],
       }),
     ],
-  })
+  }).render()
 
 // CTA Section
 const CTASection = () =>
@@ -361,7 +361,7 @@ const CTASection = () =>
         ],
       }),
     ],
-  })
+  }).render()
 
 // Enhanced Modal Components
 
