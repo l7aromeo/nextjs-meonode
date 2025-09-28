@@ -5,7 +5,6 @@ const nextConfig: NextConfig = {
   compiler: {
     emotion: true,
   },
-  turbopack: {},
 }
 
 export default nextConfig
