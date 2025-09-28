@@ -27,7 +27,7 @@ export const ProvidersWrapper = ({
         children: ThemeProvider({
           theme: initialTheme,
           children: Node(SnackbarProvider, {
-            domRoot: document.body,
+            domRoot: typeof document !== 'undefined' ? document.body : undefined,
             anchorOrigin: { vertical: 'top', horizontal: 'right' },
             maxSnack: 3,
             children,
