@@ -18,6 +18,11 @@ export const ProvidersWrapper = ({
   children: NodeElement
 }) => {
   const initialStore = useMemo(() => initializeStore(preloadedState), [preloadedState])
+  const [domRoot, setDomRoot] = useState<HTMLElement | null>(null)
+
+  useEffect(() => {
+    setDomRoot(document.body)
+  }, [])
 
   return Node(StrictMode, {
     children: [
@@ -27,7 +32,7 @@ export const ProvidersWrapper = ({
         children: ThemeProvider({
           theme: initialTheme,
           children: Node(SnackbarProvider, {
-            domRoot: typeof document !== 'undefined' ? document.body : undefined,
+            domRoot,
             anchorOrigin: { vertical: 'top', horizontal: 'right' },
             maxSnack: 3,
             children,
