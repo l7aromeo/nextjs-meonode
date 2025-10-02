@@ -1,7 +1,7 @@
 'use client'
 
 import { Node, Center, Column, Row, H1, H2, H3, Button, Text, Portal, A, Div } from '@meonode/ui'
-import { PortalProviders } from '@src/components/Providers'
+import { PortalWrapper } from '@src/components/Wrapper'
 import { useEffect, useState } from 'react'
 
 export default function HomePage() {
@@ -366,7 +366,7 @@ const CTASection = () =>
 // Enhanced Modal Components
 
 // Interactive Modal with more features
-const InteractiveModal = Portal(PortalProviders, ({ portal }) => {
+const InteractiveModal = Portal(PortalWrapper, ({ portal }) => {
   const [count, setCount] = useState(0)
   const [theme, setTheme] = useState('primary')
 
@@ -486,7 +486,7 @@ const InteractiveModal = Portal(PortalProviders, ({ portal }) => {
 })
 
 // Theme Demo Modal
-const ThemeModal = Portal(PortalProviders, ({ portal }) => {
+const ThemeModal = Portal(PortalWrapper, ({ portal }) => {
   useEffect(() => {
     setTimeout(() => portal.unmount(), 4000)
   }, [])
@@ -534,7 +534,7 @@ const ThemeModal = Portal(PortalProviders, ({ portal }) => {
 })
 
 // Animation Demo Modal
-const AnimationModal = Portal(PortalProviders, ({ portal }) => {
+const AnimationModal = Portal(PortalWrapper, ({ portal }) => {
   useEffect(() => {
     setTimeout(() => portal.unmount(), 3000)
   }, [])
@@ -569,7 +569,7 @@ const AnimationModal = Portal(PortalProviders, ({ portal }) => {
 })
 
 // Enhanced Portal Modal
-const PortalModal = Portal<{ name: string }>(PortalProviders, ({ portal, name }) => {
+const PortalModal = Portal<{ name: string }>(PortalWrapper, ({ portal, name }) => {
   const [progress, setProgress] = useState(0)
 
   useEffect(() => {

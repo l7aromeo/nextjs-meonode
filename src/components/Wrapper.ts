@@ -8,7 +8,7 @@ import lightTheme from '@src/constants/themes/lightTheme'
 const SnackbarProvider = lazy(() => import('notistack').then(module => ({ default: module.SnackbarProvider })))
 
 // Main providers wrapper for the app
-export const ProvidersWrapper = ({
+export const Wrapper = ({
   preloadedState,
   initialTheme,
   children,
@@ -69,7 +69,7 @@ const PortalThemeProvider = ({ children }: { children?: Children }) => {
 }
 
 // For portals or modals that are outside the main app tree
-export const PortalProviders = Node(StrictMode, {
+export const PortalWrapper = Node(StrictMode, {
   children: ReduxProviderWrapper({
     store: initializeStore(),
     children: Node(PortalThemeProvider),

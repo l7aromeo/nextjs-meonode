@@ -8,7 +8,7 @@ import lightTheme from '@src/constants/themes/lightTheme'
 import { ReactNode } from 'react'
 import { StyleRegistry } from '@meonode/ui/nextjs-registry'
 import { RootState } from '@src/redux/store'
-import { ProvidersWrapper } from '@src/components/Providers'
+import { Wrapper } from '@src/components/Wrapper'
 import { userAgent } from 'next/server'
 
 const geistSans = Geist({
@@ -48,7 +48,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
       Body({
         className: `${geistSans.variable} ${geistMono.variable} font-sans`,
         children: StyleRegistry({
-          children: Node(ProvidersWrapper, {
+          children: Node(Wrapper, {
             preloadedState,
             initialTheme: initialThemeMode === 'dark' ? darkTheme : lightTheme,
             children,
