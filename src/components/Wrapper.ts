@@ -1,77 +1,66 @@
 'use client'
-import { Children, Node, type NodeElement, Theme, ThemeProvider } from '@meonode/ui'
+import { Children, Node, Theme, ThemeProvider as MeoThemeProvider } from '@meonode/ui'
 import { initializeStore, ReduxProviderWrapper, RootState } from '@src/redux/store'
-import { lazy, StrictMode, useEffect, useMemo, useState } from 'react'
+import { StrictMode, useEffect, useMemo, useState } from 'react'
 import { CssBaseline } from '@meonode/mui'
 import darkTheme from '@src/constants/themes/darkTheme'
 import lightTheme from '@src/constants/themes/lightTheme'
-const SnackbarProvider = lazy(() => import('notistack').then(module => ({ default: module.SnackbarProvider })))
+import { StyleRegistry } from '@meonode/ui/nextjs-registry'
 
-// Main providers wrapper for the app
-export const Wrapper = ({
-  preloadedState,
-  initialTheme,
-  children,
-}: {
-  preloadedState: RootState
-  initialTheme: Theme
-  children: NodeElement
-}) => {
-  const initialStore = useMemo(() => initializeStore(preloadedState), [preloadedState])
-  const [domRoot, setDomRoot] = useState<HTMLElement | null>(null)
+const ThemeProvider = ({ children, isPortal, theme }: { children?: Children; isPortal?: boolean; theme?: Theme }) => {
+  const [loadedTheme, setLoadedTheme] = useState<Theme>(() => {
+    if (theme) return theme
 
-  useEffect(() => {
-    setDomRoot(document.body)
-  }, [])
-
-  return Node(StrictMode, {
-    children: [
-      CssBaseline(),
-      ReduxProviderWrapper({
-        store: initialStore,
-        children: ThemeProvider({
-          theme: initialTheme,
-          children: Node(SnackbarProvider, {
-            domRoot,
-            anchorOrigin: { vertical: 'top', horizontal: 'right' },
-            maxSnack: 3,
-            children,
-          }),
-        }),
-      }),
-    ],
-  }).render()
-}
-
-const PortalThemeProvider = ({ children }: { children?: Children }) => {
-  const [theme, setTheme] = useState<Theme>(() => {
-    // Initialize from localStorage
     const stored = localStorage.getItem('theme')
     return stored === 'dark' ? darkTheme : lightTheme
   })
 
   useEffect(() => {
-    const handleStorageChange = (e: StorageEvent) => {
-      if (e.key === 'theme') {
-        setTheme(e.newValue === 'dark' ? darkTheme : lightTheme)
+    if (isPortal) {
+      const handleStorageChange = (e: StorageEvent) => {
+        if (e.key === 'theme') {
+          setLoadedTheme(e.newValue === 'dark' ? darkTheme : lightTheme)
+        }
+      }
+
+      // Listen for changes from other tabs/windows
+      window.addEventListener('storage', handleStorageChange)
+
+      return () => {
+        window.removeEventListener('storage', handleStorageChange)
       }
     }
+  }, [isPortal])
 
-    // Listen for changes from other tabs/windows
-    window.addEventListener('storage', handleStorageChange)
-
-    return () => {
-      window.removeEventListener('storage', handleStorageChange)
-    }
-  }, [])
-
-  return ThemeProvider({ theme, children }).render()
+  return MeoThemeProvider({ theme: loadedTheme, children }).render()
 }
 
-// For portals or modals that are outside the main app tree
+export const Wrapper = ({
+  preloadedState,
+  initialTheme,
+  children,
+  isPortal = false,
+}: {
+  preloadedState?: RootState
+  initialTheme?: Theme
+  children?: Children
+  isPortal?: boolean
+}) => {
+  const initialStore = useMemo(() => initializeStore(preloadedState), [preloadedState])
+
+  return Node(StrictMode, {
+    children: StyleRegistry({
+      children: [
+        CssBaseline(),
+        ReduxProviderWrapper({
+          store: initialStore,
+          children: Node(ThemeProvider, { theme: initialTheme, isPortal, children }),
+        }),
+      ],
+    }),
+  }).render()
+}
+
 export const PortalWrapper = Node(StrictMode, {
-  children: ReduxProviderWrapper({
-    store: initializeStore(),
-    children: Node(PortalThemeProvider),
-  }),
+  children: Node(Wrapper, { isPortal: true }),
 })
