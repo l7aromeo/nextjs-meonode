@@ -2197,7 +2197,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-config-next@npm:16.0.0":
+"eslint-config-next@npm:^16.0.0":
   version: 16.0.0
   resolution: "eslint-config-next@npm:16.0.0"
   dependencies:
@@ -3537,7 +3537,7 @@ __metadata:
     "@types/react": "npm:^19.2.2"
     "@types/react-dom": "npm:^19.2.2"
     eslint: "npm:^9.38.0"
-    eslint-config-next: "npm:16.0.0"
+    eslint-config-next: "npm:^16.0.0"
     eslint-config-prettier: "npm:^10.1.8"
     eslint-plugin-prettier: "npm:^5.5.4"
     eslint-plugin-unused-imports: "npm:^4.3.0"

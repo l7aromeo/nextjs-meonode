@@ -6,7 +6,7 @@
     "dev": "next dev",
     "build": "next build --turbopack",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint --fix"
   },
   "dependencies": {
     "@emotion/cache": "^11.14.0",
@@ -29,7 +29,7 @@
     "@types/react": "^19.2.2",
     "@types/react-dom": "^19.2.2",
     "eslint": "^9.38.0",
-    "eslint-config-next": "16.0.0",
+    "eslint-config-next": "^16.0.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.4",
     "eslint-plugin-unused-imports": "^4.3.0",
