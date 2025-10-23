@@ -8,12 +8,20 @@ import lightTheme from '@src/constants/themes/lightTheme'
 import { StyleRegistry } from '@meonode/ui/nextjs-registry'
 
 const ThemeProvider = ({ children, isPortal, theme }: { children?: Children; isPortal?: boolean; theme?: Theme }) => {
-  const [loadedTheme, setLoadedTheme] = useState<Theme>(() => {
-    if (theme) return theme
+  const [loadedTheme, setLoadedTheme] = useState<Theme | undefined>(theme)
 
-    const stored = localStorage.getItem('theme')
-    return stored === 'dark' ? darkTheme : lightTheme
-  })
+  useEffect(() => {
+    if (!theme) {
+      const stored = localStorage.getItem('theme')
+
+      if (!stored) {
+        const isDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+        setLoadedTheme(isDark ? darkTheme : lightTheme)
+      } else {
+        setLoadedTheme(stored === 'dark' ? darkTheme : lightTheme)
+      }
+    }
+  }, [theme])
 
   useEffect(() => {
     if (isPortal) {
@@ -23,7 +31,6 @@ const ThemeProvider = ({ children, isPortal, theme }: { children?: Children; isP
         }
       }
 
-      // Listen for changes from other tabs/windows
       window.addEventListener('storage', handleStorageChange)
 
       return () => {
@@ -32,21 +39,33 @@ const ThemeProvider = ({ children, isPortal, theme }: { children?: Children; isP
     }
   }, [isPortal])
 
+  if (!loadedTheme) return null
+
   return MeoThemeProvider({ theme: loadedTheme, children }).render()
 }
 
 export const Wrapper = ({
   preloadedState,
-  initialTheme,
+  initialThemeMode,
   children,
   isPortal = false,
 }: {
   preloadedState?: RootState
-  initialTheme?: Theme
+  initialThemeMode?: Theme['mode']
   children?: Children
   isPortal?: boolean
 }) => {
   const initialStore = useMemo(() => initializeStore(preloadedState), [preloadedState])
+  const theme = useMemo(() => {
+    switch (initialThemeMode) {
+      case 'dark':
+        return darkTheme
+      case 'light':
+        return lightTheme
+      default:
+        return undefined
+    }
+  }, [initialThemeMode])
 
   return Node(StrictMode, {
     children: StyleRegistry({
@@ -54,7 +73,7 @@ export const Wrapper = ({
         CssBaseline(),
         ReduxProviderWrapper({
           store: initialStore,
-          children: Node(ThemeProvider, { theme: initialTheme, isPortal, children }),
+          children: ThemeProvider({ theme, isPortal, children }),
         }),
       ],
     }),

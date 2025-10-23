@@ -3,8 +3,6 @@ import { Geist, Geist_Mono } from 'next/font/google'
 import './globals.css'
 import { Html, Body, Node } from '@meonode/ui'
 import { cookies, headers } from 'next/headers'
-import darkTheme from '@src/constants/themes/darkTheme'
-import lightTheme from '@src/constants/themes/lightTheme'
 import { ReactNode } from 'react'
 import { StyleRegistry } from '@meonode/ui/nextjs-registry'
 import { RootState } from '@src/redux/store'
@@ -32,7 +30,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
   const isMobile = ua.device.type === 'mobile' || ua.device.type === 'tablet'
 
   const cookieStore = await cookies()
-  const initialThemeMode = (cookieStore.get('theme')?.value as 'light' | 'dark') || 'light'
+  const initialThemeMode = cookieStore.get('theme')?.value as 'light' | 'dark'
 
   const preloadedState: RootState = {
     app: {
@@ -50,7 +48,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
         children: StyleRegistry({
           children: Node(Wrapper, {
             preloadedState,
-            initialTheme: initialThemeMode === 'dark' ? darkTheme : lightTheme,
+            initialThemeMode,
             children,
           }),
         }),
