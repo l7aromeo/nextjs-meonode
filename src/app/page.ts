@@ -78,7 +78,7 @@ const HeroSection = () =>
             css: {
               '&:hover': {
                 transform: 'translateY(-3px)',
-                boxShadow: '0 12px 24px rgba(33, 150, 243, 0.4)',
+                boxShadow: 'theme.shadow.lg',
                 borderColor: 'theme.primary.content',
               },
             },
@@ -100,6 +100,7 @@ const HeroSection = () =>
               '&:hover': {
                 backgroundColor: 'theme.primary',
                 color: 'theme.primary.content',
+                boxShadow: 'theme.shadow.lg',
                 transform: 'translateY(-3px)',
               },
             },
@@ -181,8 +182,9 @@ const FeaturesSection = ({
             onMouseLeave: () => setActiveFeature(null),
             css: {
               '&:hover': {
+                backgroundColor: 'theme.base.hover',
                 transform: 'translateY(-4px)',
-                boxShadow: '0 8px 32px rgba(33, 150, 243, 0.15)',
+                boxShadow: 'theme.shadow.lg',
               },
             },
             children: [
