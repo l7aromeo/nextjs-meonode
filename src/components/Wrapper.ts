@@ -39,8 +39,6 @@ const ThemeProvider = ({ children, isPortal, theme }: { children?: Children; isP
     }
   }, [isPortal])
 
-  if (!loadedTheme) return null
-
   return MeoThemeProvider({ theme: loadedTheme, children }).render()
 }
 
@@ -61,9 +59,8 @@ export const Wrapper = ({
       case 'dark':
         return darkTheme
       case 'light':
-        return lightTheme
       default:
-        return undefined
+        return lightTheme
     }
   }, [initialThemeMode])
 
