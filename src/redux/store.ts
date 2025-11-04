@@ -18,7 +18,9 @@ export const initializeStore = (preloadedState?: RootState): Store<RootState, Un
       },
       preloadedState,
     })
-    setupListeners(globalStore.dispatch)
+    if (typeof window !== 'undefined') {
+      setupListeners(globalStore.dispatch)
+    }
   } else if (preloadedState) {
     globalStore.dispatch(setIsMobile(preloadedState.app.isMobile))
   }
