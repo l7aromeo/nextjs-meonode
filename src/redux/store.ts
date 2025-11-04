@@ -1,3 +1,4 @@
+'use client'
 import { configureStore, Store, UnknownAction } from '@reduxjs/toolkit'
 import { Provider, useDispatch, useSelector } from 'react-redux'
 import { createNode } from '@meonode/ui'
