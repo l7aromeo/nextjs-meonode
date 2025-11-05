@@ -1,5 +1,4 @@
 'use client'
-
 import { Node, Center, Column, Row, H1, H2, H3, Button, Text, Portal, A, Div } from '@meonode/ui'
 import { PortalWrapper } from '@src/components/Wrapper'
 import { useEffect, useState } from 'react'
@@ -317,14 +316,16 @@ const CTASection = () =>
       }),
       Row({
         gap: 'theme.spacing.lg',
+        alignItems: 'center',
         justifyContent: 'center',
         flexWrap: 'wrap',
         children: [
           A({
             backgroundColor: 'theme.primary',
             color: 'theme.primary.content',
-            padding: 'theme.spacing.lg theme.spacing.xl',
+            padding: 'theme.spacing.md theme.spacing.lg',
             borderRadius: '12px',
+            border: '2px solid theme.primary',
             fontSize: 'theme.text.lg',
             fontWeight: 600,
             textDecoration: 'none',
@@ -341,18 +342,18 @@ const CTASection = () =>
           }),
           A({
             backgroundColor: 'transparent',
-            color: 'theme.secondary',
-            padding: 'theme.spacing.lg theme.spacing.xl',
+            color: 'theme.primary',
+            padding: 'theme.spacing.md theme.spacing.lg',
             borderRadius: '12px',
-            border: '2px solid theme.secondary',
+            border: '2px solid theme.primary',
             fontSize: 'theme.text.lg',
             fontWeight: 600,
             textDecoration: 'none',
             transition: 'all 0.3s ease',
             css: {
               '&:hover': {
-                backgroundColor: 'theme.secondary',
-                color: 'theme.secondary.content',
+                backgroundColor: 'theme.primary',
+                color: 'theme.primary.content',
                 transform: 'translateY(-3px)',
               },
             },
