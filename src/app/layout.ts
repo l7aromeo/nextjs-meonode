@@ -41,7 +41,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
   return Html({
     lang: 'en',
     className: initialThemeMode === 'dark' ? 'dark-theme' : 'light-theme',
-    'data-theme': initialThemeMode === 'dark' ? 'dark' : 'light',
+    'data-theme': initialThemeMode,
     children: [
       Body({
         className: `${geistSans.variable} ${geistMono.variable} font-sans`,
