@@ -39,7 +39,7 @@ const ThemeProvider = ({ children, isPortal, theme }: { children?: Children; isP
     }
   }, [isPortal])
 
-  return MeoThemeProvider({ theme: loadedTheme, children }).render()
+  return MeoThemeProvider({ theme: loadedTheme!, children }).render()
 }
 
 export const Wrapper = ({
