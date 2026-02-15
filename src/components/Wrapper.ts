@@ -1,5 +1,5 @@
 'use client'
-import { Children, Node, Theme, ThemeProvider as MeoThemeProvider } from '@meonode/ui'
+import { Node, Theme, ThemeProvider as MeoThemeProvider, PortalProvider, PortalHost, NodeElement } from '@meonode/ui'
 import { initializeStore, ReduxProviderWrapper, RootState } from '@src/redux/store'
 import { StrictMode, useEffect, useMemo, useState } from 'react'
 import { CssBaseline } from '@meonode/mui'
@@ -7,7 +7,15 @@ import darkTheme from '@src/constants/themes/darkTheme'
 import lightTheme from '@src/constants/themes/lightTheme'
 import { StyleRegistry } from '@meonode/ui/nextjs-registry'
 
-const ThemeProvider = ({ children, isPortal, theme }: { children?: Children; isPortal?: boolean; theme?: Theme }) => {
+const ThemeProvider = ({
+  children,
+  isPortal,
+  theme,
+}: {
+  children?: NodeElement
+  isPortal?: boolean
+  theme?: Theme
+}) => {
   const [loadedTheme, setLoadedTheme] = useState<Theme | undefined>(theme)
 
   useEffect(() => {
@@ -39,7 +47,10 @@ const ThemeProvider = ({ children, isPortal, theme }: { children?: Children; isP
     }
   }, [isPortal])
 
-  return MeoThemeProvider({ theme: loadedTheme!, children }).render()
+  return MeoThemeProvider({
+    theme: loadedTheme!,
+    children: [children, PortalHost()],
+  })
 }
 
 export const Wrapper = ({
@@ -50,7 +61,7 @@ export const Wrapper = ({
 }: {
   preloadedState?: RootState
   initialThemeMode?: Theme['mode']
-  children?: Children
+  children?: NodeElement
   isPortal?: boolean
 }) => {
   const initialStore = useMemo(() => initializeStore(preloadedState), [preloadedState])
@@ -70,13 +81,15 @@ export const Wrapper = ({
         CssBaseline(),
         ReduxProviderWrapper({
           store: initialStore,
-          children: ThemeProvider({ theme, isPortal, children }),
+          children: PortalProvider({
+            children: ThemeProvider({
+              theme,
+              isPortal,
+              children,
+            }),
+          }),
         }),
       ],
     }),
   }).render()
 }
-
-export const PortalWrapper = Node(StrictMode, {
-  children: Node(Wrapper, { isPortal: true }),
-})

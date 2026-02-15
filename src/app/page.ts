@@ -1,6 +1,5 @@
 'use client'
-import { Node, Center, Column, Row, H1, H2, H3, Button, Text, Portal, A, Div, useTheme } from '@meonode/ui'
-import { PortalWrapper } from '@src/components/Wrapper'
+import { Node, Center, Column, Row, H1, H2, H3, Button, Text, A, Div, useTheme, usePortal } from '@meonode/ui'
 import { useEffect, useState } from 'react'
 import darkTheme from '@src/constants/themes/darkTheme'
 import lightTheme from '@src/constants/themes/lightTheme'
@@ -8,6 +7,7 @@ import lightTheme from '@src/constants/themes/lightTheme'
 export default function HomePage() {
   const [activeFeature, setActiveFeature] = useState<number | null>(null)
   const { setTheme } = useTheme()
+  const portal = usePortal()
 
   return Center({
     minHeight: '100vh',
@@ -45,13 +45,13 @@ export default function HomePage() {
         }),
 
         // Hero Section
-        Node(HeroSection),
+        Node(HeroSection, { portal }),
 
         // Features Section
         Node(FeaturesSection, { activeFeature, setActiveFeature }),
 
         // Interactive Demo Section
-        Node(DemoSection),
+        Node(DemoSection, { portal }),
 
         // CTA Section
         Node(CTASection),
@@ -61,7 +61,7 @@ export default function HomePage() {
 }
 
 // Hero Section Component
-const HeroSection = () =>
+const HeroSection = ({ portal }: { portal: ReturnType<typeof usePortal> }) =>
   Column({
     gap: 'theme.spacing.lg',
     textAlign: 'center',
@@ -131,7 +131,7 @@ const HeroSection = () =>
                 transform: 'translateY(-3px)',
               },
             },
-            onClick: () => InteractiveModal(),
+            onClick: () => portal.open(InteractiveModal),
           }),
         ],
       }),
@@ -245,7 +245,7 @@ const FeaturesSection = ({
 }
 
 // Demo Section Component
-const DemoSection = () =>
+const DemoSection = ({ portal }: { portal: ReturnType<typeof usePortal> }) =>
   Column({
     gap: 'theme.spacing.lg',
     textAlign: 'center',
@@ -280,7 +280,7 @@ const DemoSection = () =>
                 boxShadow: '0 8px 24px rgba(156, 39, 176, 0.3)',
               },
             },
-            onClick: () => ThemeModal(),
+            onClick: () => portal.open(ThemeModal),
           }),
           Button('⚡ Animation Demo', {
             backgroundColor: 'theme.accent',
@@ -298,7 +298,7 @@ const DemoSection = () =>
                 boxShadow: '0 8px 24px rgba(255, 193, 7, 0.3)',
               },
             },
-            onClick: () => AnimationModal(),
+            onClick: () => portal.open(AnimationModal),
           }),
           Button('🔄 Portal Demo', {
             backgroundColor: 'theme.success',
@@ -316,7 +316,7 @@ const DemoSection = () =>
                 boxShadow: '0 8px 24px rgba(76, 175, 80, 0.3)',
               },
             },
-            onClick: () => PortalModal({ name: 'Developer' }),
+            onClick: () => portal.open(PortalModal, { name: 'Developer' }),
           }),
         ],
       }),
@@ -397,17 +397,17 @@ const CTASection = () =>
 // Enhanced Modal Components
 
 // Interactive Modal with more features
-const InteractiveModal = Portal(PortalWrapper, ({ portal }) => {
+const InteractiveModal = ({ close }: { close: () => void }) => {
   const [count, setCount] = useState(0)
   const [theme, setTheme] = useState('primary')
 
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') portal.unmount()
+      if (e.key === 'Escape') close()
     }
     document.addEventListener('keydown', handleEscape)
     return () => document.removeEventListener('keydown', handleEscape)
-  }, [portal])
+  }, [close])
 
   return Center({
     position: 'fixed',
@@ -416,7 +416,7 @@ const InteractiveModal = Portal(PortalWrapper, ({ portal }) => {
     backdropFilter: 'blur(8px)',
     zIndex: 1000,
     onClick: e => {
-      if (e.currentTarget === e.target) portal.unmount()
+      if (e.currentTarget === e.target) close()
     },
     children: [
       Column({
@@ -508,19 +508,20 @@ const InteractiveModal = Portal(PortalWrapper, ({ portal }) => {
                 opacity: 0.8,
               },
             },
-            onClick: () => portal.unmount(),
+            onClick: () => close(),
           }),
         ],
       }),
     ],
-  })
-})
+  }).render()
+}
 
 // Theme Demo Modal
-const ThemeModal = Portal(PortalWrapper, ({ portal }) => {
+const ThemeModal = ({ close }: { close: () => void }) => {
   useEffect(() => {
-    setTimeout(() => portal.unmount(), 4000)
-  }, [])
+    const timer = setTimeout(() => close(), 4000)
+    return () => clearTimeout(timer)
+  }, [close])
 
   return Center({
     position: 'fixed',
@@ -528,7 +529,7 @@ const ThemeModal = Portal(PortalWrapper, ({ portal }) => {
     backgroundColor: 'rgba(0,0,0,0.4)',
     backdropFilter: 'blur(5px)',
     onClick: e => {
-      if (e.currentTarget === e.target) portal.unmount()
+      if (e.currentTarget === e.target) close()
     },
     children: [
       Column({
@@ -561,14 +562,15 @@ const ThemeModal = Portal(PortalWrapper, ({ portal }) => {
         ],
       }),
     ],
-  })
-})
+  }).render()
+}
 
 // Animation Demo Modal
-const AnimationModal = Portal(PortalWrapper, ({ portal }) => {
+const AnimationModal = ({ close }: { close: () => void }) => {
   useEffect(() => {
-    setTimeout(() => portal.unmount(), 3000)
-  }, [])
+    const timer = setTimeout(() => close(), 3000)
+    return () => clearTimeout(timer)
+  }, [close])
 
   return Center({
     position: 'fixed',
@@ -576,7 +578,7 @@ const AnimationModal = Portal(PortalWrapper, ({ portal }) => {
     backgroundColor: 'rgba(0,0,0,0.4)',
     backdropFilter: 'blur(5px)',
     onClick: e => {
-      if (e.currentTarget === e.target) portal.unmount()
+      if (e.currentTarget === e.target) close()
     },
     children: [
       Div({
@@ -596,11 +598,11 @@ const AnimationModal = Portal(PortalWrapper, ({ portal }) => {
         children: '⚡ Smooth CSS Animations!',
       }),
     ],
-  })
-})
+  }).render()
+}
 
 // Enhanced Portal Modal
-const PortalModal = Portal<{ name: string }>(PortalWrapper, ({ portal, name }) => {
+const PortalModal = ({ data: { name }, close }: { data: { name: string }; close: () => void }) => {
   const [progress, setProgress] = useState(0)
 
   useEffect(() => {
@@ -608,7 +610,7 @@ const PortalModal = Portal<{ name: string }>(PortalWrapper, ({ portal, name }) =
       setProgress(p => {
         if (p >= 100) {
           setTimeout(() => {
-            portal.unmount()
+            close()
           }, 0)
           return 100
         }
@@ -616,7 +618,7 @@ const PortalModal = Portal<{ name: string }>(PortalWrapper, ({ portal, name }) =
       })
     }, 300)
     return () => clearInterval(interval)
-  }, [])
+  }, [close])
 
   return Center({
     position: 'fixed',
@@ -624,7 +626,7 @@ const PortalModal = Portal<{ name: string }>(PortalWrapper, ({ portal, name }) =
     backgroundColor: 'rgba(0,0,0,0.5)',
     backdropFilter: 'blur(6px)',
     onClick: e => {
-      if (e.currentTarget === e.target) portal.unmount()
+      if (e.currentTarget === e.target) close()
     },
     children: [
       Column({
@@ -667,5 +669,5 @@ const PortalModal = Portal<{ name: string }>(PortalWrapper, ({ portal, name }) =
         ],
       }),
     ],
-  })
-})
+  }).render()
+}
