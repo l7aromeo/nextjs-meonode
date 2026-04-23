@@ -1,12 +1,12 @@
 import prettier from 'eslint-plugin-prettier'
 import unusedImports from 'eslint-plugin-unused-imports'
 import { defineConfig, globalIgnores } from 'eslint/config'
-import nextVitals from 'eslint-config-next/core-web-vitals'
-import nextTs from 'eslint-config-next/typescript'
+import nextPlugin from '@next/eslint-plugin-next'
+import tseslint from 'typescript-eslint'
 
 const eslintConfig = defineConfig([
-  ...nextVitals,
-  ...nextTs,
+  nextPlugin.configs['core-web-vitals'],
+  ...tseslint.configs.recommended,
   globalIgnores(['.next/**', 'out/**', 'build/**', 'next-env.d.ts']),
   {
     plugins: {
@@ -15,9 +15,9 @@ const eslintConfig = defineConfig([
     },
     rules: {
       'prettier/prettier': 'error',
-      'react-hooks/exhaustive-deps': 'off',
       '@typescript-eslint/no-explicit-any': 'off',
       '@typescript-eslint/triple-slash-reference': 'off',
+      'no-unused-vars': 'off',
       '@typescript-eslint/no-unused-vars': [
         'error',
         {
