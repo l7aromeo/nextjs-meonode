@@ -1,7 +1,7 @@
 'use client'
-import { Node, Theme, ThemeProvider as MeoThemeProvider, PortalProvider, PortalHost, Children } from '@meonode/ui'
+import { Theme, ThemeProvider as MeoThemeProvider, PortalProvider, PortalHost, Children } from '@meonode/ui'
 import { initializeStore, ReduxProviderWrapper, RootState } from '@src/redux/store'
-import { StrictMode, useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { CssBaseline } from '@meonode/mui'
 import darkTheme from '@src/constants/themes/darkTheme'
 import lightTheme from '@src/constants/themes/lightTheme'
@@ -49,20 +49,18 @@ export const Wrapper = ({
     }
   }, [themeMode])
 
-  return Node(StrictMode, {
-    children: StyleRegistry({
-      children: [
-        CssBaseline(),
-        ReduxProviderWrapper({
-          store: initialStore,
-          children: PortalProvider({
-            children: ThemeProvider({
-              theme,
-              children: Array.isArray(children) ? [...children, PortalHost()] : [children, PortalHost()],
-            }),
+  return StyleRegistry({
+    children: [
+      CssBaseline(),
+      ReduxProviderWrapper({
+        store: initialStore,
+        children: PortalProvider({
+          children: ThemeProvider({
+            theme,
+            children: Array.isArray(children) ? [...children, PortalHost()] : [children, PortalHost()],
           }),
         }),
-      ],
-    }),
+      }),
+    ],
   }).render()
 }

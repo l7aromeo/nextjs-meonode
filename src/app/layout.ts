@@ -4,7 +4,6 @@ import './globals.css'
 import { Html, Body, Node } from '@meonode/ui'
 import { cookies, headers } from 'next/headers'
 import { ReactNode } from 'react'
-import { StyleRegistry } from '@meonode/ui/nextjs-registry'
 import { RootState } from '@src/redux/store'
 import { Wrapper } from '@src/components/Wrapper'
 import { userAgent } from 'next/server'
@@ -43,14 +42,12 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
     className: themeMode === 'dark' ? 'dark-theme' : 'light-theme',
     'data-theme': themeMode,
     children: [
-      Body({
-        className: `${geistSans.variable} ${geistMono.variable} font-sans`,
-        children: StyleRegistry({
-          children: Node(Wrapper, {
-            preloadedState,
-            themeMode,
-            children,
-          }),
+      Node(Wrapper, {
+        preloadedState,
+        themeMode,
+        children: Body({
+          className: `${geistSans.variable} ${geistMono.variable} font-sans`,
+          children,
         }),
       }),
     ],
