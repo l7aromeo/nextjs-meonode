@@ -30,7 +30,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
   const isMobile = ua.device.type === 'mobile' || ua.device.type === 'tablet'
 
   const cookieStore = await cookies()
-  const initialThemeMode = cookieStore.get('theme')?.value as 'light' | 'dark'
+  const themeMode = cookieStore.get('theme')?.value as 'light' | 'dark'
 
   const preloadedState: RootState = {
     app: {
@@ -40,15 +40,15 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
 
   return Html({
     lang: 'en',
-    className: initialThemeMode === 'dark' ? 'dark-theme' : 'light-theme',
-    'data-theme': initialThemeMode,
+    className: themeMode === 'dark' ? 'dark-theme' : 'light-theme',
+    'data-theme': themeMode,
     children: [
       Body({
         className: `${geistSans.variable} ${geistMono.variable} font-sans`,
         children: StyleRegistry({
           children: Node(Wrapper, {
             preloadedState,
-            initialThemeMode,
+            themeMode,
             children,
           }),
         }),

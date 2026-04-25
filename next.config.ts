@@ -23,21 +23,6 @@ const nextConfig: NextConfig = {
   },
   // Development: Disable overlay indicators
   devIndicators: false,
-  webpack: (config, { dev }) => {
-    // Source maps: Development only for security
-    config.devtool = dev ? config.devtool : false
-
-    // Production optimization: Reduce eval usage
-    if (!dev) {
-      config.optimization = {
-        ...config.optimization,
-        moduleIds: 'deterministic',
-        chunkIds: 'deterministic',
-      }
-    }
-
-    return config
-  },
 }
 
 export default nextConfig

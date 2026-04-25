@@ -1,5 +1,5 @@
 'use client'
-import { Node, Theme, ThemeProvider as MeoThemeProvider, PortalProvider, PortalHost, NodeElement } from '@meonode/ui'
+import { Node, Theme, ThemeProvider as MeoThemeProvider, PortalProvider, PortalHost, Children } from '@meonode/ui'
 import { initializeStore, ReduxProviderWrapper, RootState } from '@src/redux/store'
 import { StrictMode, useEffect, useMemo, useState } from 'react'
 import { CssBaseline } from '@meonode/mui'
@@ -7,16 +7,8 @@ import darkTheme from '@src/constants/themes/darkTheme'
 import lightTheme from '@src/constants/themes/lightTheme'
 import { StyleRegistry } from '@meonode/ui/nextjs-registry'
 
-const ThemeProvider = ({
-  children,
-  isPortal,
-  theme,
-}: {
-  children?: NodeElement
-  isPortal?: boolean
-  theme?: Theme
-}) => {
-  const [loadedTheme, setLoadedTheme] = useState<Theme | undefined>(theme)
+const ThemeProvider = ({ children, theme }: { children: Children; theme: Theme }) => {
+  const [loadedTheme, setLoadedTheme] = useState<Theme>(theme)
 
   useEffect(() => {
     if (!theme) {
@@ -31,49 +23,31 @@ const ThemeProvider = ({
     }
   }, [theme])
 
-  useEffect(() => {
-    if (isPortal) {
-      const handleStorageChange = (e: StorageEvent) => {
-        if (e.key === 'theme') {
-          setLoadedTheme(e.newValue === 'dark' ? darkTheme : lightTheme)
-        }
-      }
-
-      window.addEventListener('storage', handleStorageChange)
-
-      return () => {
-        window.removeEventListener('storage', handleStorageChange)
-      }
-    }
-  }, [isPortal])
-
   return MeoThemeProvider({
     theme: loadedTheme!,
-    children: [children, PortalHost()],
+    children,
   })
 }
 
 export const Wrapper = ({
   preloadedState,
-  initialThemeMode,
+  themeMode,
   children,
-  isPortal = false,
 }: {
   preloadedState?: RootState
-  initialThemeMode?: Theme['mode']
-  children?: NodeElement
-  isPortal?: boolean
+  themeMode?: Theme['mode']
+  children: Children
 }) => {
   const initialStore = useMemo(() => initializeStore(preloadedState), [preloadedState])
   const theme = useMemo(() => {
-    switch (initialThemeMode) {
+    switch (themeMode) {
       case 'dark':
         return darkTheme
       case 'light':
       default:
         return lightTheme
     }
-  }, [initialThemeMode])
+  }, [themeMode])
 
   return Node(StrictMode, {
     children: StyleRegistry({
@@ -84,8 +58,7 @@ export const Wrapper = ({
           children: PortalProvider({
             children: ThemeProvider({
               theme,
-              isPortal,
-              children,
+              children: Array.isArray(children) ? [...children, PortalHost()] : [children, PortalHost()],
             }),
           }),
         }),
