@@ -1,13 +1,27 @@
 'use client'
-import { Node, Center, Column, Row, H1, H2, H3, Button, Text, A, Div, useTheme, usePortal } from '@meonode/ui'
-import { useEffect, useState } from 'react'
+import {
+  Node,
+  Center,
+  Column,
+  Row,
+  H1,
+  H2,
+  H3,
+  Button,
+  Text,
+  A,
+  Div,
+  useTheme,
+  usePortal,
+  type PortalLayerProps,
+} from '@meonode/ui'
+import { useEffect, useState, type Dispatch, type SetStateAction } from 'react'
 import darkTheme from '@src/constants/themes/darkTheme'
 import lightTheme from '@src/constants/themes/lightTheme'
 
 export default function HomePage() {
   const [activeFeature, setActiveFeature] = useState<number | null>(null)
   const { setTheme } = useTheme()
-  const portal = usePortal()
 
   return Center({
     minHeight: '100vh',
@@ -43,15 +57,14 @@ export default function HomePage() {
               }),
           }),
         }),
-
         // Hero Section
-        Node(HeroSection, { portal }),
+        Node(HeroSection),
 
         // Features Section
         Node(FeaturesSection, { activeFeature, setActiveFeature }),
 
         // Interactive Demo Section
-        Node(DemoSection, { portal }),
+        Node(DemoSection),
 
         // CTA Section
         Node(CTASection),
@@ -61,8 +74,11 @@ export default function HomePage() {
 }
 
 // Hero Section Component
-const HeroSection = ({ portal }: { portal: ReturnType<typeof usePortal> }) =>
-  Column({
+const HeroSection = () => {
+  const [count, setCount] = useState(0)
+  const portal = usePortal({ count, setCount })
+
+  return Column({
     gap: 'theme.spacing.lg',
     textAlign: 'center',
     children: [
@@ -137,6 +153,7 @@ const HeroSection = ({ portal }: { portal: ReturnType<typeof usePortal> }) =>
       }),
     ],
   }).render()
+}
 
 // Features Section Component
 const FeaturesSection = ({
@@ -245,8 +262,10 @@ const FeaturesSection = ({
 }
 
 // Demo Section Component
-const DemoSection = ({ portal }: { portal: ReturnType<typeof usePortal> }) =>
-  Column({
+const DemoSection = () => {
+  const portal = usePortal()
+
+  return Column({
     gap: 'theme.spacing.lg',
     textAlign: 'center',
     children: [
@@ -322,6 +341,7 @@ const DemoSection = ({ portal }: { portal: ReturnType<typeof usePortal> }) =>
       }),
     ],
   }).render()
+}
 
 // CTA Section
 const CTASection = () =>
@@ -397,8 +417,10 @@ const CTASection = () =>
 // Enhanced Modal Components
 
 // Interactive Modal with more features
-const InteractiveModal = ({ close }: { close: () => void }) => {
-  const [count, setCount] = useState(0)
+const InteractiveModal = ({
+  data,
+  close,
+}: PortalLayerProps<{ count: number; setCount: Dispatch<SetStateAction<number>> }>) => {
   const [theme, setTheme] = useState('primary')
 
   useEffect(() => {
@@ -451,7 +473,7 @@ const InteractiveModal = ({ close }: { close: () => void }) => {
             backgroundColor: 'rgba(33, 150, 243, 0.05)',
             borderRadius: '12px',
             children: [
-              Text(`Counter: ${count}`, {
+              Text(`Counter: ${data.count}`, {
                 fontSize: 'theme.text.xl',
                 textAlign: 'center',
                 fontWeight: 600,
@@ -466,7 +488,7 @@ const InteractiveModal = ({ close }: { close: () => void }) => {
                     padding: 'theme.spacing.sm theme.spacing.md',
                     borderRadius: '8px',
                     cursor: 'pointer',
-                    onClick: () => setCount(c => Math.max(0, c - 1)),
+                    onClick: () => data.setCount(c => Math.max(0, c - 1)),
                   }),
                   Button('+', {
                     backgroundColor: 'theme.success',
@@ -474,7 +496,7 @@ const InteractiveModal = ({ close }: { close: () => void }) => {
                     padding: 'theme.spacing.sm theme.spacing.md',
                     borderRadius: '8px',
                     cursor: 'pointer',
-                    onClick: () => setCount(c => c + 1),
+                    onClick: () => data.setCount(c => c + 1),
                   }),
                 ],
               }),
@@ -517,10 +539,9 @@ const InteractiveModal = ({ close }: { close: () => void }) => {
 }
 
 // Theme Demo Modal
-const ThemeModal = ({ close }: { close: () => void }) => {
+const ThemeModal = ({ close }: PortalLayerProps) => {
   useEffect(() => {
-    const timer = setTimeout(() => close(), 4000)
-    return () => clearTimeout(timer)
+    setTimeout(() => close(), 4000)
   }, [close])
 
   return Center({
@@ -566,10 +587,9 @@ const ThemeModal = ({ close }: { close: () => void }) => {
 }
 
 // Animation Demo Modal
-const AnimationModal = ({ close }: { close: () => void }) => {
+const AnimationModal = ({ close }: PortalLayerProps) => {
   useEffect(() => {
-    const timer = setTimeout(() => close(), 3000)
-    return () => clearTimeout(timer)
+    setTimeout(() => close(), 3000)
   }, [close])
 
   return Center({
@@ -602,7 +622,8 @@ const AnimationModal = ({ close }: { close: () => void }) => {
 }
 
 // Enhanced Portal Modal
-const PortalModal = ({ data: { name }, close }: { data: { name: string }; close: () => void }) => {
+const PortalModal = ({ close, data }: PortalLayerProps<{ name: string }>) => {
+  const { name } = data
   const [progress, setProgress] = useState(0)
 
   useEffect(() => {

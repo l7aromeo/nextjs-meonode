@@ -1,5 +1,5 @@
 'use client'
-import { Theme, ThemeProvider as MeoThemeProvider, PortalProvider, PortalHost, Children } from '@meonode/ui'
+import { Theme, ThemeProvider as MeoThemeProvider, PortalProvider, PortalHost, Children, Body } from '@meonode/ui'
 import { initializeStore, ReduxProviderWrapper, RootState } from '@src/redux/store'
 import { useEffect, useMemo, useState } from 'react'
 import { CssBaseline } from '@meonode/mui'
@@ -57,7 +57,9 @@ export const Wrapper = ({
         children: PortalProvider({
           children: ThemeProvider({
             theme,
-            children: Array.isArray(children) ? [...children, PortalHost()] : [children, PortalHost()],
+            children: Body({
+              children: Array.isArray(children) ? [...children, PortalHost()] : [children, PortalHost()],
+            }),
           }),
         }),
       }),
