@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
 import './globals.css'
-import { Html, Node } from '@meonode/ui'
+import { Body, Html, Node } from '@meonode/ui'
 import { cookies, headers } from 'next/headers'
 import { ReactNode } from 'react'
 import { RootState } from '@src/redux/store'
@@ -39,15 +39,15 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
 
   return Html({
     lang: 'en',
-    className:
-      `${geistSans.variable} ${geistMono.variable} font-sans` + themeMode === 'dark' ? 'dark-theme' : 'light-theme',
+    className: themeMode === 'dark' ? 'dark-theme' : 'light-theme',
     'data-theme': themeMode,
-    children: [
-      Node(Wrapper, {
+    children: Body({
+      className: `${geistSans.variable} ${geistMono.variable} font-sans`,
+      children: Node(Wrapper, {
         preloadedState,
         themeMode,
         children,
       }),
-    ],
+    }),
   }).render()
 }

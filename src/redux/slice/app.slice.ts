@@ -9,7 +9,7 @@ const initialState: AppState = {
 }
 
 const appSlice = createSlice({
-  name: 'theme',
+  name: 'app',
   initialState,
   reducers: {
     setIsMobile: (state, action: PayloadAction<boolean>) => {
@@ -19,4 +19,4 @@ const appSlice = createSlice({
 })
 
 export const { setIsMobile } = appSlice.actions
-export default appSlice.reducer
+export default appSlice

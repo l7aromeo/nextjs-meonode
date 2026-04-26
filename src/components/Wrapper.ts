@@ -1,68 +1,49 @@
 'use client'
-import { Theme, ThemeProvider as MeoThemeProvider, PortalProvider, PortalHost, Children, Body } from '@meonode/ui'
-import { initializeStore, ReduxProviderWrapper, RootState } from '@src/redux/store'
-import { useEffect, useMemo, useState } from 'react'
+import { Children, Node, PortalHost, PortalProvider, Theme, ThemeProvider } from '@meonode/ui'
+import { StrictMode, useMemo } from 'react'
 import { CssBaseline } from '@meonode/mui'
 import darkTheme from '@src/constants/themes/darkTheme'
 import lightTheme from '@src/constants/themes/lightTheme'
 import { StyleRegistry } from '@meonode/ui/nextjs-registry'
-
-const ThemeProvider = ({ children, theme }: { children: Children; theme: Theme }) => {
-  const [loadedTheme, setLoadedTheme] = useState<Theme>(theme)
-
-  useEffect(() => {
-    if (!theme) {
-      const stored = localStorage.getItem('theme')
-
-      if (!stored) {
-        const isDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
-        setLoadedTheme(isDark ? darkTheme : lightTheme)
-      } else {
-        setLoadedTheme(stored === 'dark' ? darkTheme : lightTheme)
-      }
-    }
-  }, [theme])
-
-  return MeoThemeProvider({
-    theme: loadedTheme!,
-    children,
-  })
-}
+import { initializeStore, ReduxProvider, RootState } from '@src/redux/store'
 
 export const Wrapper = ({
   preloadedState,
   themeMode,
   children,
 }: {
-  preloadedState?: RootState
+  preloadedState?: Partial<RootState>
   themeMode?: Theme['mode']
-  children: Children
+  children?: Children
+  isPortal?: boolean
 }) => {
-  const initialStore = useMemo(() => initializeStore(preloadedState), [preloadedState])
+  const store = useMemo(() => initializeStore(preloadedState), [preloadedState])
   const theme = useMemo(() => {
     switch (themeMode) {
       case 'dark':
         return darkTheme
       case 'light':
-      default:
         return lightTheme
+      default:
+        const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+        return isDarkMode ? darkTheme : lightTheme
     }
   }, [themeMode])
 
-  return StyleRegistry({
-    children: [
-      CssBaseline(),
-      ReduxProviderWrapper({
-        store: initialStore,
+  return Node(StrictMode, {
+    children: StyleRegistry({
+      children: ReduxProvider({
+        store,
         children: PortalProvider({
-          children: ThemeProvider({
-            theme,
-            children: Body({
-              children: Array.isArray(children) ? [...children, PortalHost()] : [children, PortalHost()],
+          children: [
+            CssBaseline(),
+            ThemeProvider({
+              theme,
+              children: Array.isArray(children) ? children.concat(PortalHost()) : [children, PortalHost()],
             }),
-          }),
+          ],
         }),
       }),
-    ],
+    }),
   }).render()
 }
