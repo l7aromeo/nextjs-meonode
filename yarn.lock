@@ -682,9 +682,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@meonode/ui@npm:^1.4.6":
-  version: 1.4.6
-  resolution: "@meonode/ui@npm:1.4.6"
+"@meonode/ui@npm:^1.5.0":
+  version: 1.5.0
+  resolution: "@meonode/ui@npm:1.5.0"
   dependencies:
     "@emotion/react": "npm:^11.14.0"
     "@emotion/serialize": "npm:^1.3.3"
@@ -693,7 +693,7 @@ __metadata:
     "@emotion/cache": ">=11.14.0"
     react: ">=19.2.0"
     react-dom: ">=19.2.0"
-  checksum: 10c0/7ee909fed4904c8da92f5aba0e189318b94ad7742c503e26b77f8a129898dd842bb2847989b981e526666de6564c91670629630eee034e3bb8107cfd288f2ac4
+  checksum: 10c0/659da2a21656539ad9806bfdc49828d0fbe57d71322818adf16c4c91e5496454d56f9175d534995021598f3f9339b58239bedaed9fa9db07a583c3828a563569
   languageName: node
   linkType: hard
 
@@ -2060,7 +2060,7 @@ __metadata:
     "@emotion/react": "npm:^11.14.0"
     "@emotion/styled": "npm:^11.14.1"
     "@meonode/mui": "npm:^1.5.1"
-    "@meonode/ui": "npm:^1.4.6"
+    "@meonode/ui": "npm:^1.5.0"
     "@mui/icons-material": "npm:^9.0.0"
     "@mui/material": "npm:^9.0.0"
     "@next/eslint-plugin-next": "npm:^16.2.4"
