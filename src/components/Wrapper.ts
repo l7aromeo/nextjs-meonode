@@ -25,6 +25,7 @@ export const Wrapper = ({
       case 'light':
         return lightTheme
       default:
+        if (typeof window === 'undefined') return darkTheme
         const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
         return isDarkMode ? darkTheme : lightTheme
     }
