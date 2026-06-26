@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
 import './globals.css'
 import { Body, Html, Node } from '@meonode/ui'
+import { StyleRegistry } from '@meonode/ui/nextjs-registry'
 import { cookies, headers } from 'next/headers'
 import { ReactNode } from 'react'
 import { RootState } from '@src/redux/store'
@@ -43,10 +44,12 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
     'data-theme': themeMode,
     children: Body({
       className: `${geistSans.variable} ${geistMono.variable} font-sans`,
-      children: Node(Wrapper, {
-        preloadedState,
-        themeMode,
-        children,
+      children: StyleRegistry({
+        children: Node(Wrapper, {
+          preloadedState,
+          themeMode,
+          children,
+        }),
       }),
     }),
   }).render()
