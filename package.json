@@ -24,6 +24,7 @@
     "react-redux": "^9.3.0"
   },
   "devDependencies": {
+    "@meonode/compiler": "^0.6.0",
     "@next/eslint-plugin-next": "^16.2.12",
     "@types/node": "^26.1.2",
     "@types/react": "^19.2.18",
