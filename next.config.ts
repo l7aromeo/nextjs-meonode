@@ -20,6 +20,7 @@ const nextConfig: NextConfig = {
   // Performance: Optimize package imports for faster builds
   experimental: {
     optimizePackageImports: ['@mui/material', '@mui/icons-material', '@meonode/ui', '@meonode/mui', 'notistack'],
+    swcPlugins: [['@meonode/compiler', { factoryModules: ['@meonode/mui'] }]],
   },
   // Development: Disable overlay indicators
   devIndicators: false,
