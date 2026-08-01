@@ -2,7 +2,7 @@
 # Manual changes might be lost - proceed with caution!
 
 __metadata:
-  version: 8
+  version: 10
   cacheKey: 10c0
 
 "@babel/code-frame@npm:^7.0.0, @babel/code-frame@npm:^7.27.1":
@@ -660,18 +660,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@meonode/compiler@npm:^0.6.0":
+"@meonode/compiler@npm:0.6.0":
   version: 0.6.0
   resolution: "@meonode/compiler@npm:0.6.0"
   checksum: 10c0/b1a6e76e3d10eec76154e6f24b158697d4a1e1dc5eed74bef25580a3715ef389f814e4abdfc3da78edde2afba71dbb5852272a17d91b3a7278fb44abd465db85
   languageName: node
   linkType: hard
 
-"@meonode/mui@npm:^1.5.9":
-  version: 1.5.9
-  resolution: "@meonode/mui@npm:1.5.9"
+"@meonode/mui@npm:1.5.10":
+  version: 1.5.10
+  resolution: "@meonode/mui@npm:1.5.10"
   peerDependencies:
-    "@meonode/ui": ^1.8.1
+    "@meonode/ui": ^1.8.5
     "@mui/lab": ^9.0.0-beta.6
     "@mui/material": ^9.2.0
     "@mui/material-nextjs": ^9.1.1
@@ -685,13 +685,13 @@ __metadata:
     "@mui/x-tree-view": ^9.10.1
     "@mui/x-tree-view-pro": ^9.10.1
     react: ">=19.2.8"
-  checksum: 10c0/56f0a9db6023ed2371809b2da74c3d14014accc553ab2599d7372246fc6d819c3623abcca4f758e92fb48a00a3f14bbfdd26bf2b534125d31f7478bbb5b30c5b
+  checksum: 10c0/eaffbe84a8f7e4b91cda1f7838c77854464cc8d79c660d24032b08578bbc444f73aba1cd03f85faee33047abe32b4f22a1c2ad2c9fcb46888808c1ac1fd28565
   languageName: node
   linkType: hard
 
-"@meonode/ui@npm:^1.8.2":
-  version: 1.8.2
-  resolution: "@meonode/ui@npm:1.8.2"
+"@meonode/ui@npm:1.8.5":
+  version: 1.8.5
+  resolution: "@meonode/ui@npm:1.8.5"
   dependencies:
     "@emotion/react": "npm:^11.14.0"
     "@emotion/serialize": "npm:^1.3.3"
@@ -701,7 +701,7 @@ __metadata:
     "@emotion/react": ">=11.14.0"
     react: ">=19.2.0"
     react-dom: ">=19.2.0"
-  checksum: 10c0/1e0d7b9f7d6393b5e75a49328ea63250aa980887800f21b2d58762140e3466cdb4a75881614d37f9e807fe3903d2b2a470c33f1bbf751d80fe8c882d9e0bba4e
+  checksum: 10c0/0e9c9783c2c19e14d3297e8e63f2ff042bb3000e65e6be11aa99fcd76c5d6acf6ffc6b9051e9623e38a1ed2894a8f432942e0e828945503956748a52d6ae20ca
   languageName: node
   linkType: hard
 
@@ -2085,9 +2085,9 @@ __metadata:
     "@emotion/cache": "npm:^11.14.0"
     "@emotion/react": "npm:^11.14.0"
     "@emotion/styled": "npm:^11.14.1"
-    "@meonode/compiler": "npm:^0.6.0"
-    "@meonode/mui": "npm:^1.5.9"
-    "@meonode/ui": "npm:^1.8.2"
+    "@meonode/compiler": "npm:0.6.0"
+    "@meonode/mui": "npm:1.5.10"
+    "@meonode/ui": "npm:1.8.5"
     "@mui/icons-material": "npm:^9.2.0"
     "@mui/material": "npm:^9.2.0"
     "@next/eslint-plugin-next": "npm:^16.2.12"
@@ -2406,7 +2406,7 @@ __metadata:
 
 "resolve@patch:resolve@npm%3A^1.19.0#optional!builtin<compat/resolve>":
   version: 1.22.12
-  resolution: "resolve@patch:resolve@npm%3A1.22.12#optional!builtin<compat/resolve>::version=1.22.12&hash=c3c19d"
+  resolution: "resolve@patch:resolve@npm%3A1.22.12#optional!builtin<compat/resolve>::version=1.22.12&hash=9bd1a5"
   dependencies:
     es-errors: "npm:^1.3.0"
     is-core-module: "npm:^2.16.1"
@@ -2414,7 +2414,7 @@ __metadata:
     supports-preserve-symlinks-flag: "npm:^1.0.0"
   bin:
     resolve: bin/resolve
-  checksum: 10c0/fc6519984ae1f894d877c0060ba8b1f5ba3bc0e85a02f74e141929c118c23d74d9735619a9cc2965397387e514884245c65d72a40731dcb6cfc84c7bcdc8321e
+  checksum: 10c0/e12af106e16e652bd83060e8afacece4ee3dcbd0f4cf028e3d9ad178e6ced9ecb1c87ee60158b239582313902a717f8adc57a9b76ea54b1994141ba15f420c65
   languageName: node
   linkType: hard
 
