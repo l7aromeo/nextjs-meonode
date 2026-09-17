@@ -12,8 +12,8 @@
     "@emotion/cache": "^11.14.0",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.1",
-    "@meonode/mui": "^2.0.0",
-    "@meonode/ui": "^2.0.1",
+    "@meonode/mui": "^3.0.0",
+    "@meonode/ui": "^3.0.0",
     "@mui/icons-material": "^9.3.1",
     "@mui/material": "^9.3.1",
     "@reduxjs/toolkit": "^2.12.0",
@@ -24,7 +24,7 @@
     "react-redux": "^9.3.0"
   },
   "devDependencies": {
-    "@meonode/compiler": "^0.7.1",
+    "@meonode/compiler": "^0.9.0",
     "@next/eslint-plugin-next": "^16.3.3",
     "@types/node": "^26.4.0",
     "@types/react": "^19.2.18",
