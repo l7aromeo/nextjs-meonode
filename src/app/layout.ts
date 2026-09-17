@@ -1,12 +1,13 @@
 import type { Metadata } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
 import './globals.css'
-import { Body, Html, Node } from '@meonode/ui'
+import { Body, Head, Html, Node, themeScript } from '@meonode/ui'
 import { StyleRegistry } from '@meonode/ui/nextjs-registry'
-import { cookies, headers } from 'next/headers'
+import { headers } from 'next/headers'
 import { ReactNode } from 'react'
 import { RootState } from '@src/redux/store'
 import { Wrapper } from '@src/components/Wrapper'
+import { themeConfig } from '@src/constants/themes/config'
 import { userAgent } from 'next/server'
 
 const geistSans = Geist({
@@ -29,9 +30,6 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
   const ua = userAgent({ headers: reqHeaders })
   const isMobile = ua.device.type === 'mobile' || ua.device.type === 'tablet'
 
-  const cookieStore = await cookies()
-  const themeMode = cookieStore.get('theme')?.value as 'light' | 'dark'
-
   const preloadedState: RootState = {
     app: {
       isMobile,
@@ -40,17 +38,34 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
 
   return Html({
     lang: 'en',
-    className: themeMode === 'dark' ? 'dark-theme' : 'light-theme',
-    'data-theme': themeMode,
-    children: Body({
-      className: `${geistSans.variable} ${geistMono.variable} font-sans`,
-      children: StyleRegistry({
-        children: Node(Wrapper, {
-          preloadedState,
-          themeMode,
-          children,
+    /*
+     * `data-theme` is deliberately absent. The server does not know which mode
+     * the reader is in, and guessing is the flash this arrangement removes. The
+     * script below writes it before the first paint; `suppressHydrationWarning`
+     * is what stops React reporting the attribute it did not send.
+     */
+    suppressHydrationWarning: true,
+    children: [
+      /*
+       * First in <head>, ahead of any stylesheet. A classic inline script placed
+       * after a stylesheet cannot run until that sheet has loaded, which is the
+       * delay this exists to avoid -- and `next/script` is no use either, since
+       * even `beforeInteractive` is too late for this.
+       */
+      Head({
+        key: 'theme',
+        children: themeScript(themeConfig),
+      }),
+      Body({
+        key: 'body',
+        className: `${geistSans.variable} ${geistMono.variable} font-sans`,
+        children: StyleRegistry({
+          children: Node(Wrapper, {
+            preloadedState,
+            children,
+          }),
         }),
       }),
-    }),
+    ],
   }).render()
 }
