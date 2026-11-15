@@ -58,7 +58,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
       }),
       Body({
         key: 'body',
-        className: `${geistSans.variable} ${geistMono.variable} font-sans`,
+        className: `${geistSans.variable} ${geistMono.variable}`,
         children: StyleRegistry({
           children: Node(Wrapper, {
             preloadedState,
