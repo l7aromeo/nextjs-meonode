@@ -213,6 +213,7 @@ const FeaturesSection = ({
         gap: 'theme.spacing.lg',
         children: features.map((feature, index) =>
           Div({
+            key: feature.title,
             padding: 'theme.spacing.lg',
             borderRadius: '16px',
             border: `2px solid ${activeFeature === index ? 'theme.primary' : 'rgba(255,255,255,0.1)'}`,
@@ -241,7 +242,7 @@ const FeaturesSection = ({
                 color: 'theme.primary',
               }),
               Text(feature.description, {
-                fontSize: 'theme.text.base',
+                fontSize: 'theme.text.md',
                 lineHeight: 1.6,
                 marginBottom: 'theme.spacing.sm',
               }),
@@ -286,7 +287,7 @@ const DemoSection = () => {
             padding: 'theme.spacing.md theme.spacing.lg',
             borderRadius: '10px',
             border: '2px solid theme.secondary',
-            fontSize: 'theme.text.base',
+            fontSize: 'theme.text.md',
             fontWeight: 500,
             cursor: 'pointer',
             transition: 'all 0.3s ease',
@@ -304,7 +305,7 @@ const DemoSection = () => {
             padding: 'theme.spacing.md theme.spacing.lg',
             borderRadius: '10px',
             border: '2px solid theme.accent',
-            fontSize: 'theme.text.base',
+            fontSize: 'theme.text.md',
             fontWeight: 500,
             cursor: 'pointer',
             transition: 'all 0.3s ease',
@@ -322,7 +323,7 @@ const DemoSection = () => {
             padding: 'theme.spacing.md theme.spacing.lg',
             borderRadius: '10px',
             border: '2px solid theme.success',
-            fontSize: 'theme.text.base',
+            fontSize: 'theme.text.md',
             fontWeight: 500,
             cursor: 'pointer',
             transition: 'all 0.3s ease',
@@ -504,6 +505,7 @@ const InteractiveModal = ({
             justifyContent: 'center',
             children: ['primary', 'secondary', 'accent'].map(t =>
               Button(t, {
+                key: t,
                 backgroundColor: theme === t ? `theme.${t}` : 'transparent',
                 color: theme === t ? `theme.${t}.content` : `theme.${t}`,
                 border: `2px solid theme.${t}`,
